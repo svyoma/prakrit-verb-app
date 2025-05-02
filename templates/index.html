@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prakrit Verb Conjugation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Playfair+Display:wght@400;700&family=Lora:wght@400;500;600&display=swap">
+  <style>
+    :root {
+  --primary: #8b5a2b;
+  --primary-dark: #704626;
+  --secondary: #d4a76a;
+  --accent: #b07d62;
+  --light: #f9f3e9;
+  --dark: #3a3327;
+  --paper: #f4efe4;
+  --border-radius: 8px;
+  --shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  --transition: all 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Lora', Georgia, serif;
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(135, 90, 43, 0.05)' fill-rule='evenodd'/%3E%3C/svg%3E");
+  color: var(--dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: var(--light);
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(255,255,255,0.1)' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.form-card {
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transform: translateY(0);
+  transition: var(--transition);
+  border: 1px solid rgba(139, 90, 43, 0.1);
+}
+
+.form-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(139, 90, 43, 0.15);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--primary-dark);
+  transition: var(--transition);
+}
+
+input, select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-family: 'Lora', Georgia, serif;
+  transition: var(--transition);
+  outline: none;
+  background-color: white;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.2);
+}
+
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Lora', Georgia, serif;
+}
+
+button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Custom mobile-friendly select dropdown */
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 2.5rem;
+}
+
+.custom-select::after {
+  content: '\f107';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  pointer-events: none;
+  transition: var(--transition);
+}
+
+.custom-select:hover::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Enhanced tab styling */
+.tabs-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  background: white;
+  border-radius: var(--border-radius);
+  padding: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  border: 1px solid rgba(139, 90, 43, 0.1);
+}
+
+.tab-button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--dark);
+  border-radius: calc(var(--border-radius) - 4px);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  font-family: 'Lora', Georgia, serif;
+}
+
+.tab-button.active {
+  background-color: var(--primary);
+  color: white;
+}
+
+.tab-button:hover:not(.active) {
+  background-color: rgba(139, 90, 43, 0.1);
+}
+
+/* Tables container for smooth transition */
+.tables-wrapper {
+  position: relative;
+  min-height: 300px;
+  margin-bottom: 2rem;
+}
+
+.table-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+  background: white;
+  border: 1px solid rgba(139, 90, 43, 0.1);
+}
+
+.table-container.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.table-container.prev {
+  transform: translateX(-20px);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(139, 90, 43, 0.1);
+  font-family: 'Noto Sans Devanagari', 'Lora', Georgia, serif;
+}
+
+th {
+  background: var(--light);
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.devanagari-text {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  font-size: 1.1rem;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background-color: rgba(139, 90, 43, 0.03);
+}
+
+.tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tools button {
+  width: auto;
+  background: var(--dark);
+  transition: var(--transition);
+}
+
+.tools button:hover {
+  background: var(--primary);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--primary-dark);
+  font-size: 0.875rem;
+  border-top: 1px solid rgba(139, 90, 43, 0.1);
+  margin-top: 2rem;
+}
+
+/* Loading animation */
+.loader {
+  display: none;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--dark);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  z-index: 100;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Responsive styles */
+@media (max-width: 640px) {
+  .tools {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .tools button {
+    width: 100%;
+  }
+  
+  th, td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .custom-select select {
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+  
+  input {
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Prakrit Verb Conjugation</h1>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="form-card">
+      <form id="form">
+        <div class="form-group">
+          <label for="word">Enter Verb Root (Devanagari or Harvard-Kyoto):</label>
+          <input type="text" id="word" name="word" required autocomplete="off" spellcheck="false">
+        </div>
+        
+        <!-- Keep gender dropdown for UI consistency, but we'll ignore it in processing -->
+        <div class="form-group">
+          <label for="gender">Conjugation Type:</label>
+          <div class="custom-select">
+            <select id="gender" name="gender">
+              <option value="present">Present Tense</option>
+              <option value="past">Past Tense (Coming Soon)</option>
+              <option value="future">Future Tense (Coming Soon)</option>
+            </select>
+          </div>
+        </div>
+        
+        <button type="submit" id="submit-btn">
+          <span>Generate Conjugation</span>
+          <div class="loader" id="loader"></div>
+        </button>
+      </form>
+    </div>
+    
+    <div id="result-section" style="display: none;">
+      <div class="tabs-container">
+        <div class="tabs">
+          <button class="tab-button active" data-tab="dev">Devanagari</button>
+          <button class="tab-button" data-tab="hk">Harvard-Kyoto</button>
+        </div>
+      </div>
+      
+      <div class="tools">
+        <button onclick="copyToClipboard()">
+          <i class="fas fa-copy"></i> Copy to Clipboard
+        </button>
+        <button onclick="exportCSV()">
+          <i class="fas fa-download"></i> Export as CSV
+        </button>
+      </div>
+      
+      <div class="tables-wrapper" id="tables">
+        <div class="table-container active" id="table-dev"></div>
+        <div class="table-container" id="table-hk"></div>
+      </div>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="container">
+      <p>Copyright<p>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+  // Form submission
+  const form = document.getElementById("form");
+  const submitBtn = document.getElementById("submit-btn");
+  const loader = document.getElementById("loader");
+  const resultSection = document.getElementById("result-section");
+  const tabsContainer = document.querySelector(".tabs-container");
+  const tablesDev = document.getElementById("table-dev");
+  const tablesHK = document.getElementById("table-hk");
+  
+  // Toast notification
+  const createToast = (message) => {
+    // Remove existing toast if any
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+      existingToast.remove();
+    }
+    
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    // Trigger reflow to ensure animation works
+    toast.offsetHeight;
+    
+    // Show toast
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+    
+    // Hide toast after 3 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 500);
+    }, 3000);
+  };
+  
+  // Tab switching functionality
+  const tabs = document.querySelectorAll('.tab-button');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      
+      // Update active tab button
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Update active table container with smooth animation
+      const tableContainers = document.querySelectorAll('.table-container');
+      tableContainers.forEach(container => {
+        container.classList.remove('active', 'prev');
+        if (target === 'dev' && container.id === 'table-hk') {
+          container.classList.add('prev');
+        }
+        if (target === 'hk' && container.id === 'table-dev') {
+          container.classList.add('prev');
+        }
+      });
+      
+      // Show the selected table with animation
+      document.getElementById(`table-${target}`).classList.add('active');
+    });
+  });
+  
+  // Function to create conjugation tables
+  const createTables = (data) => {
+    // Create Devanagari table
+    const devTable = createTable(data, 'devanagari');
+    tablesDev.innerHTML = devTable;
+    
+    // Create Harvard-Kyoto table
+    const hkTable = createTable(data, 'hk');
+    tablesHK.innerHTML = hkTable;
+    
+    // Show results with smooth animation
+    resultSection.style.display = 'block';
+    resultSection.style.opacity = '0';
+    resultSection.style.transform = 'translateY(20px)';
+    
+    // Trigger reflow to ensure animation works
+    resultSection.offsetHeight;
+    
+    // Apply animation
+    resultSection.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    setTimeout(() => {
+      resultSection.style.opacity = '1';
+      resultSection.style.transform = 'translateY(0)';
+    }, 50);
+    
+    // Scroll to results
+    setTimeout(() => {
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 300);
+  };
+  
+  // Function to create a table for the given script
+  const createTable = (data, script) => {
+    let html = '<table>';
+    html += '<thead><tr><th>Person</th><th>Singular</th><th>Plural</th></tr></thead><tbody>';
+    
+    data.forEach(row => {
+      html += '<tr>';
+      html += `<td>${row.case}</td>`;
+      
+      // Singular forms
+      html += '<td>';
+      row[script].sg.forEach((form, i) => {
+        const cssClass = script === 'devanagari' ? 'devanagari-text' : '';
+        html += `<div class="${cssClass}">${form}</div>`;
+        if (i < row[script].sg.length - 1) html += '<hr style="border: none; border-top: 1px dashed rgba(139, 90, 43, 0.2); margin: 0.5rem 0;">';
+      });
+      html += '</td>';
+      
+      // Plural forms
+      html += '<td>';
+      row[script].pl.forEach((form, i) => {
+        const cssClass = script === 'devanagari' ? 'devanagari-text' : '';
+        html += `<div class="${cssClass}">${form}</div>`;
+        if (i < row[script].pl.length - 1) html += '<hr style="border: none; border-top: 1px dashed rgba(139, 90, 43, 0.2); margin: 0.5rem 0;">';
+      });
+      html += '</td>';
+      
+      html += '</tr>';
+    });
+    
+    html += '</tbody></table>';
+    return html;
+  };
+  
+  // Handle form submission
+  form.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const word = formData.get("word").trim();
+    
+    if (!word) {
+      createToast("Please enter a verb root");
+      return;
+    }
+    
+    // Show loading state
+    submitBtn.querySelector("span").textContent = "Generating...";
+    loader.style.display = "inline-block";
+    submitBtn.disabled = true;
+    
+    try {
+      const response = await fetch("/generate", {
+        method: "POST",
+        body: formData
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        createTables(data);
+      } else {
+        createToast(data.error || "An error occurred");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      createToast("Network error. Please try again.");
+    } finally {
+      // Reset loading state with a small delay to show animation
+      setTimeout(() => {
+        submitBtn.querySelector("span").textContent = "Generate Conjugation";
+        loader.style.display = "none";
+        submitBtn.disabled = false;
+      }, 300);
+    }
+  });
+  
+  // Copy to clipboard functionality
+  window.copyToClipboard = function() {
+    const activeTab = document.querySelector('.tab-button.active').dataset.tab;
+    const activeTable = document.getElementById(`table-${activeTab}`);
+    
+    // Create a temporary textarea to copy HTML content
+    const textarea = document.createElement('textarea');
+    textarea.value = activeTable.textContent;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    
+    createToast("Copied to clipboard!");
+  };
+  
+  // Export as CSV functionality
+  window.exportCSV = function() {
+    const activeTab = document.querySelector('.tab-button.active').dataset.tab;
+    const activeTable = document.getElementById(`table-${activeTab}`);
+    const rows = activeTable.querySelectorAll('tr');
+    
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Person,Singular,Plural\n";
+    
+    rows.forEach((row, i) => {
+      if (i === 0) return; // Skip header row
+      
+      const cells = row.querySelectorAll('td');
+      if (cells.length) {
+        const person = cells[0].textContent.trim();
+        const singular = cells[1].textContent.trim().replace(/\n/g, ' | ');
+        const plural = cells[2].textContent.trim().replace(/\n/g, ' | ');
+        
+        csvContent += `"${person}","${singular}","${plural}"\n`;
+      }
+    });
+    
+    // Create and trigger download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `prakrit_verb_conjugation_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    createToast("CSV file downloaded!");
+  };
+  
+  // Add some initial fade-in animation to the form
+  const formCard = document.querySelector('.form-card');
+  formCard.style.opacity = '0';
+  formCard.style.transform = 'translateY(20px)';
+  formCard.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  
+  // Trigger animation after a short delay
+  setTimeout(() => {
+    formCard.style.opacity = '1';
+    formCard.style.transform = 'translateY(0)';
+  }, 200);
+});
+        </script>
+      </footer>
+      </body></html>
