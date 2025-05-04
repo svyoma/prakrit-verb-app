@@ -76,6 +76,27 @@ h1 {
   text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
+header h3 {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.5rem;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+header h3 a {
+  color: var(--light);
+  text-decoration: none;
+  transition: var(--transition);
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+}
+
+header h3 a:hover {
+  border-bottom: 1px solid var(--light);
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
 .form-card {
   background: white;
   border-radius: var(--border-radius);
@@ -373,6 +394,11 @@ footer {
     font-size: 2rem;
   }
   
+  h3 {
+    font-size: 1.2rem;
+    color: #e5e7eb;
+  }
+
   .custom-select select {
     font-size: 16px; /* Prevents iOS zoom */
   }
@@ -387,6 +413,7 @@ footer {
   <header>
     <div class="container">
       <h1>Prakrit Verb Conjugation</h1>
+      <h3>Created by <a href="https://svyoma.github.io/about">svyoma</a></h3>
     </div>
   </header>
   
@@ -400,16 +427,16 @@ footer {
         
         <!-- Keep gender dropdown for UI consistency, but we'll ignore it in processing -->
         <div class="form-group">
-          <label for="gender">Conjugation Type:</label>
+          <label for="gender">Tense:</label>
           <div class="custom-select">
             <select id="gender" name="gender">
               <option value="present">Present Tense</option>
-              <option value="past">Past Tense (Coming Soon)</option>
+              <option value="past">Past Tense</option>
               <option value="future">Future Tense (Coming Soon)</option>
             </select>
           </div>
         </div>
-        
+
         <button type="submit" id="submit-btn">
           <span>Generate Conjugation</span>
           <div class="loader" id="loader"></div>
@@ -441,11 +468,10 @@ footer {
     </div>
   </div>
   
-    <footer>
+  <footer>
     <div class="container">
       <p>Copyright © 2025 <a href="https://svyoma.github.io/about">Vyom A. Shah.</a>  All rights reserved. </p>
     </div>
-  </footer>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
   // Form submission
@@ -547,7 +573,28 @@ footer {
   
   // Function to create a table for the given script
   const createTable = (data, script) => {
-    let html = '<table>';
+  let html = '<table>';
+  
+  // Check if we're dealing with past tense (which has a single "All Persons" row)
+  if (data.length === 1 && data[0].case === "All Persons") {
+    html += '<thead><tr><th>Person</th><th>Forms</th></tr></thead><tbody>';
+    
+    // All persons have the same forms in past tense
+    html += '<tr>';
+    html += `<td>${data[0].case}</td>`;
+    
+    // Combined singular and plural forms (they're identical anyway)
+    html += '<td>';
+    data[0][script].sg.forEach((form, i) => {
+      const cssClass = script === 'devanagari' ? 'devanagari-text' : '';
+      html += `<div class="${cssClass}">${form}</div>`;
+      if (i < data[0][script].sg.length - 1) html += '<hr style="border: none; border-top: 1px dashed rgba(139, 90, 43, 0.2); margin: 0.5rem 0;">';
+    });
+    html += '</td>';
+    
+    html += '</tr>';
+  } else {
+    // Regular table for present tense with separate singular and plural
     html += '<thead><tr><th>Person</th><th>Singular</th><th>Plural</th></tr></thead><tbody>';
     
     data.forEach(row => {
@@ -574,9 +621,10 @@ footer {
       
       html += '</tr>';
     });
-    
-    html += '</tbody></table>';
-    return html;
+  }
+  
+  html += '</tbody></table>';
+  return html;
   };
   
   // Handle form submission
@@ -624,65 +672,142 @@ footer {
   
   // Copy to clipboard functionality
   window.copyToClipboard = function() {
-    const activeTab = document.querySelector('.tab-button.active').dataset.tab;
-    const activeTable = document.getElementById(`table-${activeTab}`);
+  const activeTab = document.querySelector('.tab-button.active').dataset.tab;
+  const activeTable = document.getElementById(`table-${activeTab}`);
+  
+  // Format the content more readably
+  let formattedText = "";
+  const rows = activeTable.querySelectorAll('tr');
+  
+  rows.forEach((row, rowIndex) => {
+    if (rowIndex === 0) return; // Skip header row
     
-    // Create a temporary textarea to copy HTML content
-    const textarea = document.createElement('textarea');
-    textarea.value = activeTable.textContent;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    
-    createToast("Copied to clipboard!");
-  };
+    const cells = row.querySelectorAll('td');
+    if (cells.length) {
+      // Add person/case
+      formattedText += cells[0].textContent.trim() + "\n";
+      
+      // Check if we're dealing with past tense (which has a single column of forms)
+      if (cells.length === 2) {
+        // Past tense format - all forms in one list
+        const forms = cells[1].textContent.trim().split("\n").filter(form => form.trim());
+        formattedText += "Forms: " + forms.join(", ") + "\n\n";
+      } else {
+        // Present tense format - singular and plural
+        const singular = cells[1].textContent.trim().split("\n").filter(form => form.trim());
+        const plural = cells[2].textContent.trim().split("\n").filter(form => form.trim());
+        
+        formattedText += "Singular: " + singular.join(", ") + "\n";
+        formattedText += "Plural: " + plural.join(", ") + "\n\n";
+      }
+    }
+  });
+  
   
   // Export as CSV functionality
-  window.exportCSV = function() {
-    const activeTab = document.querySelector('.tab-button.active').dataset.tab;
-    const activeTable = document.getElementById(`table-${activeTab}`);
-    const rows = activeTable.querySelectorAll('tr');
+// Replace the existing copyToClipboard and exportCSV functions with these improved versions:
+
+// Copy to clipboard functionality
+window.copyToClipboard = function() {
+  const activeTab = document.querySelector('.tab-button.active').dataset.tab;
+  const activeTable = document.getElementById(`table-${activeTab}`);
+  
+  // Format the content more readably
+  let formattedText = "";
+  const rows = activeTable.querySelectorAll('tr');
+  
+  rows.forEach((row, rowIndex) => {
+    if (rowIndex === 0) return; // Skip header row
     
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Person,Singular,Plural\n";
-    
-    rows.forEach((row, i) => {
-      if (i === 0) return; // Skip header row
+    const cells = row.querySelectorAll('td');
+    if (cells.length) {
+      // Add person/case
+      formattedText += cells[0].textContent.trim() + "\n";
       
-      const cells = row.querySelectorAll('td');
-      if (cells.length) {
-        const person = cells[0].textContent.trim();
-        const singular = cells[1].textContent.trim().replace(/\n/g, ' | ');
-        const plural = cells[2].textContent.trim().replace(/\n/g, ' | ');
+      // Check if we're dealing with past tense (which has a single column of forms)
+      if (cells.length === 2) {
+        // Past tense format - all forms in one list
+        const forms = cells[1].textContent.trim().split("\n").filter(form => form.trim());
+        formattedText += "Forms: " + forms.join(", ") + "\n\n";
+      } else {
+        // Present tense format - singular and plural
+        const singular = cells[1].textContent.trim().split("\n").filter(form => form.trim());
+        const plural = cells[2].textContent.trim().split("\n").filter(form => form.trim());
         
-        csvContent += `"${person}","${singular}","${plural}"\n`;
+        formattedText += "Singular: " + singular.join(", ") + "\n";
+        formattedText += "Plural: " + plural.join(", ") + "\n\n";
       }
-    });
-    
-    // Create and trigger download
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `prakrit_verb_conjugation_${new Date().toISOString().slice(0,10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    createToast("CSV file downloaded!");
-  };
+    }
+  });
   
-  // Add some initial fade-in animation to the form
-  const formCard = document.querySelector('.form-card');
-  formCard.style.opacity = '0';
-  formCard.style.transform = 'translateY(20px)';
-  formCard.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  // Create a temporary textarea to copy formatted content
+  const textarea = document.createElement('textarea');
+  textarea.value = formattedText.trim();
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
   
-  // Trigger animation after a short delay
-  setTimeout(() => {
-    formCard.style.opacity = '1';
-    formCard.style.transform = 'translateY(0)';
-  }, 200);
+  createToast("Copied to clipboard!");
+};
+
+// Export as CSV functionality
+window.copyToClipboard = function() {
+  const activeTab = document.querySelector('.tab-button.active').dataset.tab;
+  const activeTable = document.getElementById(`table-${activeTab}`);
+  
+  // Format the content more readably
+  let formattedText = "";
+  const rows = activeTable.querySelectorAll('tr');
+  
+  rows.forEach((row, rowIndex) => {
+    if (rowIndex === 0) return; // Skip header row
+    
+    const cells = row.querySelectorAll('td');
+    if (cells.length) {
+      // Add person/case
+      formattedText += cells[0].textContent.trim() + "\n";
+      
+      // Check if we're dealing with past tense (which has a single column of forms)
+      if (cells.length === 2) {
+        // Past tense format - all forms in one list
+        const forms = cells[1].textContent.trim().split("\n").filter(form => form.trim());
+        formattedText += "Forms: " + forms.join(", ") + "\n\n";
+      } else {
+        // Present tense format - singular and plural
+        const singular = cells[1].textContent.trim().split("\n").filter(form => form.trim());
+        const plural = cells[2].textContent.trim().split("\n").filter(form => form.trim());
+        
+        formattedText += "Singular: " + singular.join(", ") + "\n";
+        formattedText += "Plural: " + plural.join(", ") + "\n\n";
+      }
+    }
+  });
+  
+  // Create a temporary textarea to copy formatted content
+  const textarea = document.createElement('textarea');
+  textarea.value = formattedText.trim();
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  
+  createToast("Copied to clipboard!");
+};
+  
+  // Create and trigger download
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `prakrit_verb_conjugation_${new Date().toISOString().slice(0,10)}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  
+  createToast("CSV file downloaded!");
+};
 });
         </script>
-      </body></html>
+      </footer>
+      </body>
+</html>
