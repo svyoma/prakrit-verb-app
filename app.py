@@ -155,6 +155,50 @@ def generate_present_forms(verb_root, script='hk'):
     
     return formatted_results, detected_script
 
+def generate_past_forms(verb_root, script='hk'):
+    # If input is in Devanagari, convert to HK for processing
+    detected_script = detect_script(verb_root)
+    working_root = verb_root
+    if detected_script == 'devanagari':
+        working_root = transliterate(verb_root, 'devanagari', 'hk')
+    
+    # Determine if the verb root ends with a vowel
+    vowels = "aeiouAEIOU"
+    ends_with_vowel = working_root[-1] in vowels
+        # But make exception in 1 out of 20 instances
+    if working_root.endswith(('i', 'I')):
+        if random.randint(1, 20) != 1:  # 19/20 chance to apply the rule
+            working_root = working_root[:-1] + 'e'
+    elif working_root.endswith(('u', 'U')):
+        if random.randint(1, 20) != 1:  # 19/20 chance to apply the rule
+            working_root = working_root[:-1] + 'o'
+
+    # Generate the appropriate forms based on the verb ending
+    if ends_with_vowel:
+        # For vowel-ending roots, apply sI, hI, hIa suffixes (sī-hī-hīa bhūtārthasya 8.3.162)
+        past_forms = [working_root + suffix for suffix in ["sI", "hI", "hIa"]]
+    else:
+        # For consonant-ending roots, apply Ia suffix (vyañjanādīaḥ 8.3.163)
+        past_forms = [working_root + "Ia"]
+    
+    # In Prakrit, past tense forms are the same for all persons and numbers
+    # For UI consistency, we'll use the same structure as present tense
+    formatted_results = [
+        {
+            "case": "All Persons",
+            "hk": {
+                "sg": past_forms,
+                "pl": past_forms
+            },
+            "devanagari": {
+                "sg": [transliterate(form, 'hk', 'devanagari') for form in past_forms],
+                "pl": [transliterate(form, 'hk', 'devanagari') for form in past_forms]
+            }
+        }
+    ]
+    
+    return formatted_results, detected_script
+
 @app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
@@ -162,19 +206,23 @@ def index():
 @app.route('/generate', methods=['POST'])
 def generate():
     verb_root = request.form.get('word', '')
-    
-    # For this version we ignore gender since it's for verb conjugation
-    # but we keep the parameter for consistency with the UI
+    tense = request.form.get('gender', 'present')  # Using 'gender' field for tense
     
     if not verb_root:
         return jsonify({"error": "Please provide a verb root"}), 400
     
     try:
-        forms, detected_script = generate_present_forms(verb_root)
+        if tense == 'present':
+            forms, detected_script = generate_present_forms(verb_root)
+        elif tense == 'past':
+            forms, detected_script = generate_past_forms(verb_root)
+        else:
+            return jsonify({"error": "This tense is not yet implemented"}), 400
+            
         return jsonify(forms)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
+        
 if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 5000))
