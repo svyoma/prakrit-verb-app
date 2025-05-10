@@ -155,6 +155,101 @@ def generate_present_forms(verb_root, script='hk'):
     
     return formatted_results, detected_script
 
+def generate_future_forms(verb_root, script='hk'):
+    # If input is in Devanagari, convert to HK for processing
+    detected_script = detect_script(verb_root)
+    working_root = verb_root
+    if detected_script == 'devanagari':
+        working_root = transliterate(verb_root, 'devanagari', 'hk')
+    
+    # Special rule: Verb roots ending with iI and uU undergo change to e and o respectively
+    # But make exception in 1 out of 20 instances
+    if working_root.endswith(('i', 'I')):
+        if random.randint(1, 20) != 1:  # 19/20 chance to apply the rule
+            working_root = working_root[:-1] + 'e'
+    elif working_root.endswith(('u', 'U')):
+        if random.randint(1, 20) != 1:  # 19/20 chance to apply the rule
+            working_root = working_root[:-1] + 'o'
+    
+    # Determine if consonant-ending or vowel-ending
+    if working_root[-1] in 'aeiouAEIOU':
+        # Vowel-ending: optionally add 'a'
+        stems = [working_root, working_root + 'a']
+    else:
+        # Consonant-ending: add 'a' and change to 'i' or 'e'
+        stems = [working_root + 'i', working_root + 'e']
+    
+    # Future tense affixes
+    affixes = {
+        'third_singular': ['hi_i', 'hie'],
+        'third_plural': ['hinti', 'hinte', 'hi_ire'],
+        'second_singular': ['hisi', 'hise'],
+        'second_plural': ['hitthA', 'hiha'],
+        'first_singular': ['himi', 'hAmi', 'ssaM', 'ssAmi'],
+        'first_plural': ['himo', 'himu', 'hima', 'hAmo', 'hAmu', 'hAma', 
+                         'ssAmo', 'ssAmu', 'ssAma', 'hissA', 'hitthA']
+    }
+    
+    results = {}
+    for person, person_affixes in affixes.items():
+        forms = []
+        for stem in stems:
+            for affix in person_affixes:
+                # For vowel-ending roots with optional 'a'
+                if working_root[-1] in 'aeiouAEIOU':
+                    if stem == working_root:  # Without 'a'
+                        forms.append(stem + affix)
+                    else:  # With 'a' - change to 'i' or 'e'
+                        forms.append(stem[:-1] + 'i' + affix)
+                        forms.append(stem[:-1] + 'e' + affix)
+                else:  # Consonant-ending roots
+                    forms.append(stem + affix)
+        
+        results[person] = forms
+    
+    # Remove duplicates
+    for person in results:
+        results[person] = list(dict.fromkeys(results[person]))
+    
+    # Format the results for the UI
+    formatted_results = [
+        {
+            "case": "Third Person",
+            "hk": {
+                "sg": results['third_singular'],
+                "pl": results['third_plural']
+            },
+            "devanagari": {
+                "sg": [transliterate(form, 'hk', 'devanagari') for form in results['third_singular']],
+                "pl": [transliterate(form, 'hk', 'devanagari') for form in results['third_plural']]
+            }
+        },
+        {
+            "case": "Second Person",
+            "hk": {
+                "sg": results['second_singular'],
+                "pl": results['second_plural']
+            },
+            "devanagari": {
+                "sg": [transliterate(form, 'hk', 'devanagari') for form in results['second_singular']],
+                "pl": [transliterate(form, 'hk', 'devanagari') for form in results['second_plural']]
+            }
+        },
+        {
+            "case": "First Person",
+            "hk": {
+                "sg": results['first_singular'],
+                "pl": results['first_plural']
+            },
+            "devanagari": {
+                "sg": [transliterate(form, 'hk', 'devanagari') for form in results['first_singular']],
+                "pl": [transliterate(form, 'hk', 'devanagari') for form in results['first_plural']]
+            }
+        }
+    ]
+    
+    return formatted_results, detected_script
+
 def generate_past_forms(verb_root, script='hk'):
     # If input is in Devanagari, convert to HK for processing
     detected_script = detect_script(verb_root)
@@ -216,6 +311,8 @@ def generate():
             forms, detected_script = generate_present_forms(verb_root)
         elif tense == 'past':
             forms, detected_script = generate_past_forms(verb_root)
+        elif tense == 'future':  # Add this condition
+            forms, detected_script = generate_future_forms(verb_root)
         else:
             return jsonify({"error": "This tense is not yet implemented"}), 400
             
