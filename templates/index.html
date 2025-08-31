@@ -76,7 +76,7 @@ h1 {
   text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
-header h3 {
+header h3, h4 {
   position: relative;
   z-index: 1;
   margin-top: 0.5rem;
@@ -85,14 +85,14 @@ header h3 {
   font-weight: 400;
 }
 
-header h3 a {
+header h3 a, h4 a {
   color: var(--light);
   text-decoration: none;
   transition: var(--transition);
   border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
 }
 
-header h3 a:hover {
+header h3 a:hover, h4 a:hover {
   border-bottom: 1px solid var(--light);
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
@@ -414,6 +414,7 @@ footer {
     <div class="container">
       <h1>Prakrit Verb Conjugation</h1>
       <h3>Created by <a href="https://svyoma.github.io/about">svyoma</a></h3>
+      <h4>Check out <a href="https://prakrit-noun-app.onrender.com/">Noun Form Generator</a> and <a href="https://prakrit-verb-parser.onrender.com/">Verb Form Analyzer</a> here!</h4>
     </div>
   </header>
   
@@ -433,6 +434,26 @@ footer {
               <option value="present">Present Tense</option>
               <option value="past">Past Tense</option>
               <option value="future">Future Tense</option>
+              <option value="imperative">Imperative</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="accent">Accent:</label>
+          <div class="custom-select">
+            <select id="accent" name="dialect">
+              <option value="maharashtri">Maharashtri</option>
+              <option value="magadhi">Magadhi</option>
+              <option value="shaurseni">Shaurseni</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="voice">Voice:</label>
+          <div class="custom-select">
+            <select id="voice" name="voice">
+              <option value="active">Active</option>
+              <option value="passive">Passive</option>
             </select>
           </div>
         </div>
@@ -470,7 +491,8 @@ footer {
   
   <footer>
     <div class="container">
-      <p>Copyright © 2025 <a href="https://svyoma.github.io/about">Vyom A. Shah.</a>  All rights reserved. </p>
+      <p>Created by <a href="https://svyoma.github.io/about">Vyom A. Shah.</a>  All rights reserved. </p>
+      <p>Check out the <a href="https://github.com/svyoma/prakrit-verb-app">source code</a> on GitHub.</p>
     </div>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
